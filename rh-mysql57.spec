@@ -20,14 +20,14 @@
 Summary: Package that installs %{scl}
 Name: %{scl}
 Version: 3.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/File
 Source0: README
 Source1: LICENSE
 Requires: scl-utils
 Requires: %{?scl_prefix}mysql-server
-BuildRequires: scl-utils-build help2man
+BuildRequires: scl-utils-build help2man scl-utils-build-helpers
 
 %description
 This is the main package for %{scl} Software Collection, which installs
@@ -49,7 +49,7 @@ Package shipping essential scripts to work with %{scl} Software Collection.
 %package build
 Summary: Package shipping basic build configuration
 Group: Applications/File
-Requires: scl-utils-build
+Requires: scl-utils-build scl-utils-build-helpers
 
 %description build
 Package shipping essential configuration macros to build %{scl} Software
@@ -61,6 +61,15 @@ Summary: Package shipping development files for %{scl}
 %description scldevel
 Package shipping development files, especially usefull for development of
 packages depending on %{scl} Software Collection.
+
+%if 0%{?scl_syspaths_metapackage:1}
+%scl_syspaths_metapackage
+Requires: %{?scl_prefix}mysql-syspaths
+Requires: %{?scl_prefix}mysql-config-syspaths
+Requires: %{?scl_prefix}mysql-server-syspaths
+
+%scl_syspaths_metapackage_description
+%endif
 
 %prep
 %setup -c -T
@@ -152,7 +161,12 @@ restorecon -R %{_localstatedir} >/dev/null 2>&1 || :
 %doc LICENSE
 %{_root_sysconfdir}/rpm/macros.%{scl_name_base}-scldevel
 
+%{?scl_syspaths_metapackage:%files syspaths}
+
 %changelog
+* Wed Sep 12 2018 Honza Horak <hhorak@redhat.com> - 3.2-2
+- Add syspath subpackage
+
 * Wed Jun 27 2018 Honza Horak <hhorak@redhat.com> - 3.2-1
 - Change version to MySQL 8.0
 
