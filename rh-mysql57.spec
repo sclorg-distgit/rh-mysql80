@@ -20,7 +20,7 @@
 Summary: Package that installs %{scl}
 Name: %{scl}
 Version: 3.2
-Release: 2%{?dist}
+Release: 2.bs1%{?dist}
 License: GPLv2+
 Group: Applications/File
 Source0: README
